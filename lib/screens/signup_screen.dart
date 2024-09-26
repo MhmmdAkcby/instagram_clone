@@ -1,9 +1,14 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/products/utils/colors.dart';
 import 'package:instagram_clone/products/utils/image_path.dart';
 import 'package:instagram_clone/products/utils/project_string.dart';
+import 'package:instagram_clone/products/utils/utils.dart';
 import 'package:instagram_clone/products/widgets/text_field_input.dart';
+import 'package:instagram_clone/resources/auth_methods.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -17,6 +22,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
+  Uint8List? _image;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -27,9 +34,36 @@ class _SignupScreenState extends State<SignupScreen> {
     _usernameController.dispose();
   }
 
+  void selectImage() async {
+    Uint8List img = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = img;
+    });
+  }
+
+  void signUpUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().signUpUser(
+      email: _emailController.text,
+      password: _passwordController.text,
+      username: _usernameController.text,
+      bio: _bioController.text,
+      file: _image!,
+    );
+    setState(() {
+      _isLoading = false;
+    });
+    if (res != 'success') {
+      showSnackBar(context: context, content: res);
+    } else {}
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: _buildUI(),
     );
   }
@@ -48,33 +82,11 @@ class _SignupScreenState extends State<SignupScreen> {
             SizedBox(height: _WidgetSize().sizedBoxHeight),
 
             //circular widget to accept and show our selected file
-            Stack(
-              children: [
-                CircleAvatar(
-                  radius: _WidgetSize().circularAvatarRadius,
-                  backgroundImage: const NetworkImage(
-                      'https://images.unsplash.com/photo-1720048171419-b515a96a73b8?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
-                ),
-                Positioned(
-                  bottom: -10,
-                  left: 80,
-                  child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.add_a_photo,
-                        color: primaryColor,
-                      )),
-                ),
-              ],
-            ),
+            _circularPfp(),
             SizedBox(height: _WidgetSize().sizedBoxHeight2),
 
             //text field input for username
             _usernameInput(),
-            SizedBox(height: _WidgetSize().sizedBoxHeight2),
-
-            //text field input for bio
-            _bioInput(),
             SizedBox(height: _WidgetSize().sizedBoxHeight2),
 
             // text field input for email
@@ -83,7 +95,11 @@ class _SignupScreenState extends State<SignupScreen> {
 
             // text field input for password
             _passwordInput(),
-            SizedBox(height: _WidgetSize().sizedBoxHeight),
+            SizedBox(height: _WidgetSize().sizedBoxHeight2),
+
+            //text field input for bio
+            _bioInput(),
+            SizedBox(height: _WidgetSize().sizedBoxHeight2),
 
             // button signup
             _signupButton(),
@@ -95,6 +111,36 @@ class _SignupScreenState extends State<SignupScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Stack _circularPfp() {
+    return Stack(
+      children: [
+        _image != null
+            ? CircleAvatar(
+                radius: _WidgetSize().circularAvatarRadius,
+                backgroundImage: MemoryImage(_image!),
+              )
+            : CircleAvatar(
+                radius: _WidgetSize().circularAvatarRadius,
+                backgroundImage: AssetImage(ImagePath.defaultPfp.imagePath()),
+              ),
+        _addPfp(),
+      ],
+    );
+  }
+
+  Widget _addPfp() {
+    return Positioned(
+      bottom: _WidgetSize().pbottom,
+      left: _WidgetSize().pleft,
+      child: IconButton(
+          onPressed: selectImage,
+          icon: const Icon(
+            Icons.add_a_photo,
+            color: primaryColor,
+          )),
     );
   }
 
@@ -120,15 +166,20 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Widget _signupButton() {
     return InkWell(
-      child: Container(
-        width: double.infinity,
-        alignment: Alignment.center,
-        padding: const _WidgetEdgeInsets.loginButtonPaddingV(),
-        decoration: _loginButtonDecoration(),
-        child: Text(ProjectString.signUpText.toStr()),
-      ),
-      onTap: () {},
-    );
+        onTap: signUpUser,
+        child: Container(
+          width: double.infinity,
+          alignment: Alignment.center,
+          padding: const _WidgetEdgeInsets.loginButtonPaddingV(),
+          decoration: _loginButtonDecoration(),
+          child: _isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(
+                    color: primaryColor,
+                  ),
+                )
+              : Text(ProjectString.signUpText.toStr()),
+        ));
   }
 
   ShapeDecoration _loginButtonDecoration() {
@@ -202,7 +253,9 @@ class _WidgetSize {
   final double sizedBoxHeight2 = 24;
   final double sizedBoxHeight3 = 12;
   final double buttonRadius = 4;
-  final double circularAvatarRadius = 64;
+  final double circularAvatarRadius = 80;
+  final double pbottom = -12;
+  final double pleft = 100;
   //int
   final int flex = 2;
 }
