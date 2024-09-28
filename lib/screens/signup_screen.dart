@@ -9,6 +9,10 @@ import 'package:instagram_clone/products/utils/project_string.dart';
 import 'package:instagram_clone/products/utils/utils.dart';
 import 'package:instagram_clone/products/widgets/text_field_input.dart';
 import 'package:instagram_clone/resources/auth_methods.dart';
+import 'package:instagram_clone/responsive/mobile_screen_layout.dart';
+import 'package:instagram_clone/responsive/responsive_layout_screen.dart';
+import 'package:instagram_clone/responsive/web_screen_layout.dart';
+import 'package:instagram_clone/screens/login_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -57,7 +61,20 @@ class _SignupScreenState extends State<SignupScreen> {
     });
     if (res != 'success') {
       showSnackBar(context: context, content: res);
-    } else {}
+    } else {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+            webScreenLayout: WebScreenLayout(),
+            mobileScreenLayout: MobileScreenLayout(),
+          ),
+        ),
+      );
+    }
+  }
+
+  void navigateToLogin() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 
   @override
@@ -150,8 +167,8 @@ class _SignupScreenState extends State<SignupScreen> {
       children: [
         _infoText(child: Text(ProjectString.haveAccountInfoText.toStr())),
         GestureDetector(
+          onTap: navigateToLogin,
           child: _infoText(child: Text(ProjectString.loginText.toStr(), style: _signUpTextStyle())),
-          onTap: () {},
         ),
       ],
     );
