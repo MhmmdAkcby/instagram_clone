@@ -3,6 +3,7 @@ import 'package:instagram_clone/models/user.dart';
 import 'package:instagram_clone/products/utils/colors.dart';
 import 'package:instagram_clone/products/widgets/like_animation.dart';
 import 'package:instagram_clone/provider/user_provider.dart';
+import 'package:instagram_clone/resources/firestore_methods.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -75,7 +76,12 @@ class _PostCardState extends State<PostCard> {
           ),
           //Image Section
           GestureDetector(
-            onDoubleTap: () {
+            onDoubleTap: () async {
+              await FirestoreMethods().likePost(
+                widget.snap['postId'],
+                user.uid,
+                widget.snap['like'],
+              );
               setState(() {
                 isLikeAnimating = true;
               });
@@ -120,7 +126,13 @@ class _PostCardState extends State<PostCard> {
                 isAnimating: widget.snap['like'].contains(user.uid),
                 smallLike: true,
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await FirestoreMethods().likePost(
+                      widget.snap['postId'],
+                      user.uid,
+                      widget.snap['like'],
+                    );
+                  },
                   icon: const Icon(
                     Icons.favorite,
                     color: Colors.red,
