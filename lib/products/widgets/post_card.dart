@@ -4,6 +4,7 @@ import 'package:instagram_clone/products/utils/colors.dart';
 import 'package:instagram_clone/products/widgets/like_animation.dart';
 import 'package:instagram_clone/provider/user_provider.dart';
 import 'package:instagram_clone/resources/firestore_methods.dart';
+import 'package:instagram_clone/screens/comment_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -126,21 +127,23 @@ class _PostCardState extends State<PostCard> {
                 isAnimating: widget.snap['like'].contains(user.uid),
                 smallLike: true,
                 child: IconButton(
-                  onPressed: () async {
-                    await FirestoreMethods().likePost(
-                      widget.snap['postId'],
-                      user.uid,
-                      widget.snap['like'],
-                    );
-                  },
-                  icon: const Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                  ),
-                ),
+                    onPressed: () async {
+                      await FirestoreMethods().likePost(
+                        widget.snap['postId'],
+                        user.uid,
+                        widget.snap['like'],
+                      );
+                    },
+                    icon: widget.snap['like'].contains(user.uid)
+                        ? const Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                          )
+                        : const Icon(Icons.favorite_border)),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () =>
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CommentScreen())),
                 icon: const Icon(
                   Icons.comment,
                 ),

@@ -1,10 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/models/user.dart' as model;
 import 'package:instagram_clone/products/utils/colors.dart';
 import 'package:instagram_clone/products/utils/global_variables.dart';
-import 'package:instagram_clone/provider/user_provider.dart';
-import 'package:provider/provider.dart';
 
 class MobileScreenLayout extends StatefulWidget {
   const MobileScreenLayout({super.key});
@@ -40,7 +37,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    //model.User user = Provider.of<UserProvider>(context).getUser;
 
     return Scaffold(
       body: PageView(
