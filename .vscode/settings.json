@@ -4,6 +4,7 @@
         "firestore",
         "notif",
         "RGBO",
-        "Signup"
+        "Signup",
+        "Unfollow"
     ]
 }
