@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/models/user.dart';
-import 'package:instagram_clone/products/utils/colors.dart';
+import 'package:instagram_clone/products/constants/color_constants.dart';
+import 'package:instagram_clone/products/utils/global_variables.dart';
 import 'package:instagram_clone/products/utils/utils.dart';
 import 'package:instagram_clone/products/widgets/like_animation.dart';
 import 'package:instagram_clone/provider/user_provider.dart';
@@ -21,6 +22,8 @@ class PostCard extends StatefulWidget {
 class _PostCardState extends State<PostCard> {
   bool isLikeAnimating = false;
   int commentLen = 0;
+
+  get mobileBackgroundColor => null;
 
   @override
   void initState() {
@@ -43,8 +46,13 @@ class _PostCardState extends State<PostCard> {
   @override
   Widget build(BuildContext context) {
     final User user = Provider.of<UserProvider>(context).getUser;
+    final width = MediaQuery.of(context).size.width;
     return Container(
-      color: mobileBackgroundColor,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: width > webScreenSize ? ColorConstants.secondaryColor : mobileBackgroundColor,
+        ),
+      ),
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         children: [
@@ -213,7 +221,7 @@ class _PostCardState extends State<PostCard> {
                   padding: const EdgeInsets.only(top: 8.0),
                   child: RichText(
                     text: TextSpan(
-                      style: const TextStyle(color: primaryColor),
+                      style: const TextStyle(color: ColorConstants.primaryColor),
                       children: [
                         TextSpan(
                           text: widget.snap['username'],
@@ -234,7 +242,7 @@ class _PostCardState extends State<PostCard> {
                       'View all $commentLen comments',
                       style: const TextStyle(
                         fontSize: 16,
-                        color: secondaryColor,
+                        color: ColorConstants.secondaryColor,
                       ),
                     ),
                   ),
@@ -245,7 +253,7 @@ class _PostCardState extends State<PostCard> {
                     DateFormat.yMMMd().format(widget.snap['datePublished'].toDate()),
                     style: const TextStyle(
                       fontSize: 16,
-                      color: secondaryColor,
+                      color: ColorConstants.secondaryColor,
                     ),
                   ),
                 ),

@@ -3,7 +3,8 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/models/user.dart';
-import 'package:instagram_clone/products/utils/colors.dart';
+import 'package:instagram_clone/products/constants/color_constants.dart';
+import 'package:instagram_clone/products/constants/string_constants.dart';
 import 'package:instagram_clone/products/utils/utils.dart';
 import 'package:instagram_clone/provider/user_provider.dart';
 import 'package:instagram_clone/resources/firestore_methods.dart';
@@ -38,11 +39,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
         profImage,
       );
 
-      if (res == "success") {
+      if (res == StringConstants.success) {
         setState(() {
           _isLoading = false;
         });
-        showSnackBar(context: context, content: 'Posted!');
+        showSnackBar(context: context, content: StringConstants.addPostPosted);
         clearImage();
       } else {
         showSnackBar(context: context, content: res);
@@ -57,11 +58,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
       context: context,
       builder: (context) {
         return SimpleDialog(
-          title: const Text('Create Post'),
+          title: const Text(StringConstants.addPostCreatePost),
           children: [
             SimpleDialogOption(
               padding: const EdgeInsets.all(20.0),
-              child: const Text('Take photo'),
+              child: const Text(StringConstants.addPostTakePhoto),
               onPressed: () async {
                 Navigator.of(context).pop();
                 Uint8List file = await pickImage(ImageSource.camera);
@@ -72,7 +73,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
             ),
             SimpleDialogOption(
               padding: const EdgeInsets.all(20.0),
-              child: const Text('Choose photo from gallery'),
+              child: const Text(StringConstants.addPostChoosePhoto),
               onPressed: () async {
                 Navigator.of(context).pop();
                 Uint8List file = await pickImage(ImageSource.gallery);
@@ -83,7 +84,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
             ),
             SimpleDialogOption(
               padding: const EdgeInsets.all(20.0),
-              child: const Text('Cancel'),
+              child: const Text(StringConstants.globalCancel),
               onPressed: () async {
                 Navigator.of(context).pop();
               },
@@ -119,12 +120,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
           )
         : Scaffold(
             appBar: AppBar(
-              backgroundColor: mobileBackgroundColor,
+              backgroundColor: ColorConstants.mobileBackgroundColor,
               leading: IconButton(
                 onPressed: clearImage,
                 icon: const Icon(Icons.arrow_back),
               ),
-              title: const Text('Post to'),
+              title: const Text(StringConstants.addPostPostTo),
               centerTitle: false,
               actions: [
                 TextButton(
@@ -134,7 +135,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     profImage: user.photoUrl,
                   ),
                   child: const Text(
-                    'Post',
+                    StringConstants.addPostPost,
                     style: TextStyle(
                       color: Colors.blueAccent,
                       fontWeight: FontWeight.bold,
@@ -147,7 +148,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
             body: Column(
               children: [
                 _isLoading
-                    ? const LinearProgressIndicator(color: blueColor)
+                    ? const LinearProgressIndicator(color: ColorConstants.blueColor)
                     : const Padding(
                         padding: EdgeInsets.only(top: 0),
                       ),
@@ -166,7 +167,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       child: TextField(
                         controller: _descriptionController,
                         decoration: const InputDecoration(
-                          hintText: 'Write a caption...',
+                          hintText: StringConstants.addPostWriteCaption,
                           border: InputBorder.none,
                         ),
                         maxLines: 8,

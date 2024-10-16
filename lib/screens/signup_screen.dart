@@ -3,9 +3,9 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:instagram_clone/products/utils/colors.dart';
+import 'package:instagram_clone/products/constants/color_constants.dart';
+import 'package:instagram_clone/products/constants/string_constants.dart';
 import 'package:instagram_clone/products/utils/image_path.dart';
-import 'package:instagram_clone/products/utils/project_string.dart';
 import 'package:instagram_clone/products/utils/utils.dart';
 import 'package:instagram_clone/products/widgets/text_field_input.dart';
 import 'package:instagram_clone/resources/auth_methods.dart';
@@ -59,7 +59,7 @@ class _SignupScreenState extends State<SignupScreen> {
     setState(() {
       _isLoading = false;
     });
-    if (res != 'success') {
+    if (res != StringConstants.success) {
       showSnackBar(context: context, content: res);
     } else {
       Navigator.of(context).push(
@@ -156,7 +156,7 @@ class _SignupScreenState extends State<SignupScreen> {
           onPressed: selectImage,
           icon: const Icon(
             Icons.add_a_photo,
-            color: primaryColor,
+            color: ColorConstants.primaryColor,
           )),
     );
   }
@@ -165,10 +165,10 @@ class _SignupScreenState extends State<SignupScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _infoText(child: Text(ProjectString.haveAccountInfoText.toStr())),
+        _infoText(child: const Text(StringConstants.haveAccountInfoText)),
         GestureDetector(
           onTap: navigateToLogin,
-          child: _infoText(child: Text(ProjectString.loginText.toStr(), style: _signUpTextStyle())),
+          child: _infoText(child: Text(StringConstants.loginText, style: _signUpTextStyle())),
         ),
       ],
     );
@@ -192,10 +192,10 @@ class _SignupScreenState extends State<SignupScreen> {
           child: _isLoading
               ? const Center(
                   child: CircularProgressIndicator(
-                    color: primaryColor,
+                    color: ColorConstants.primaryColor,
                   ),
                 )
-              : Text(ProjectString.signUpText.toStr()),
+              : const Text(StringConstants.signUpText),
         ));
   }
 
@@ -206,14 +206,14 @@ class _SignupScreenState extends State<SignupScreen> {
           Radius.circular(_WidgetSize().buttonRadius),
         ),
       ),
-      color: blueColor,
+      color: ColorConstants.blueColor,
     );
   }
 
   Widget _usernameInput() {
     return TextFieldInput(
       textEditingController: _usernameController,
-      hintText: ProjectString.usernameText.toStr(),
+      hintText: StringConstants.userNameText,
       textInputType: TextInputType.text,
     );
   }
@@ -221,7 +221,7 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget _bioInput() {
     return TextFieldInput(
       textEditingController: _bioController,
-      hintText: ProjectString.bioText.toStr(),
+      hintText: StringConstants.bioText,
       textInputType: TextInputType.text,
     );
   }
@@ -229,7 +229,7 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget _emailInput() {
     return TextFieldInput(
       textEditingController: _emailController,
-      hintText: ProjectString.emailText.toStr(),
+      hintText: StringConstants.emailText,
       textInputType: TextInputType.emailAddress,
     );
   }
@@ -237,7 +237,7 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget _passwordInput() {
     return TextFieldInput(
       textEditingController: _passwordController,
-      hintText: ProjectString.passwordText.toStr(),
+      hintText: StringConstants.passwordText,
       textInputType: TextInputType.text,
       isPass: true,
     );
@@ -246,7 +246,7 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget _instagramSvgMethod() {
     return SvgPicture.asset(
       ImagePath.instagramSvg.imagePath(),
-      color: primaryColor,
+      color: ColorConstants.primaryColor,
       height: _WidgetSize().instagramSvgHeight,
     );
   }

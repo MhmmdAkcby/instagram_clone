@@ -5,12 +5,16 @@ class TextFieldInput extends StatelessWidget {
   final bool isPass;
   final String hintText;
   final TextInputType textInputType;
+  final IconData? icon;
+  final Function()? onChange;
   const TextFieldInput({
     super.key,
     required this.textEditingController,
     this.isPass = false,
     required this.hintText,
     required this.textInputType,
+    this.icon,
+    this.onChange,
   });
 
   @override
@@ -32,6 +36,7 @@ class TextFieldInput extends StatelessWidget {
       enabledBorder: inputBorder,
       filled: true,
       contentPadding: const _WidgetEdgeInsets.contentPadding(),
+      suffixIcon: IconButton(onPressed: onChange, icon: Icon(icon)),
     );
   }
 }

@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/models/user.dart';
-import 'package:instagram_clone/products/utils/colors.dart';
+import 'package:instagram_clone/products/constants/color_constants.dart';
+import 'package:instagram_clone/products/constants/string_constants.dart';
 import 'package:instagram_clone/products/widgets/comment_card.dart';
 import 'package:instagram_clone/provider/user_provider.dart';
 import 'package:instagram_clone/resources/firestore_methods.dart';
@@ -30,16 +31,16 @@ class _CommentScreenState extends State<CommentScreen> {
     final User user = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: mobileBackgroundColor,
-        title: const Text('Comments'),
+        backgroundColor: ColorConstants.mobileBackgroundColor,
+        title: const Text(StringConstants.commentsComments),
         centerTitle: false,
       ),
       body: StreamBuilder<Object>(
         stream: FirebaseFirestore.instance
-            .collection('posts')
-            .doc(widget.snap['postId'])
-            .collection('comments')
-            .orderBy('dataPublished', descending: true)
+            .collection(StringConstants.posts)
+            .doc(widget.snap[StringConstants.postId])
+            .collection(StringConstants.comments)
+            .orderBy(StringConstants.dataPublished, descending: true)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -71,7 +72,7 @@ class _CommentScreenState extends State<CommentScreen> {
                   child: TextField(
                     controller: _commentController,
                     decoration: InputDecoration(
-                      hintText: 'Comment as ${user.username}',
+                      hintText: '${StringConstants.commentsCommentsAs} ${user.username}',
                       border: InputBorder.none,
                     ),
                   ),
@@ -80,7 +81,7 @@ class _CommentScreenState extends State<CommentScreen> {
               InkWell(
                 onTap: () async {
                   await FirestoreMethods().postComment(
-                    widget.snap['postId'],
+                    widget.snap[StringConstants.postId],
                     _commentController.text,
                     user.uid,
                     user.username,
@@ -93,8 +94,8 @@ class _CommentScreenState extends State<CommentScreen> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                   child: const Text(
-                    'Post',
-                    style: TextStyle(color: Colors.blue),
+                    StringConstants.globalPost,
+                    style: TextStyle(color: ColorConstants.blueColor),
                   ),
                 ),
               )

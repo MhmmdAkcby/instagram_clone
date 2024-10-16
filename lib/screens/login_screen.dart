@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:instagram_clone/products/utils/colors.dart';
+import 'package:instagram_clone/products/constants/color_constants.dart';
+import 'package:instagram_clone/products/constants/string_constants.dart';
+import 'package:instagram_clone/products/utils/global_variables.dart';
 import 'package:instagram_clone/products/utils/image_path.dart';
-import 'package:instagram_clone/products/utils/project_string.dart';
 import 'package:instagram_clone/products/utils/utils.dart';
 import 'package:instagram_clone/products/widgets/text_field_input.dart';
 import 'package:instagram_clone/resources/auth_methods.dart';
@@ -22,6 +23,13 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
+  bool isShow = true;
+
+  void _changeVisibility() {
+    setState(() {
+      isShow = !isShow;
+    });
+  }
 
   @override
   void dispose() {
@@ -39,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
       password: _passwordController.text,
     );
 
-    if (res == "success") {
+    if (res == StringConstants.success) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => const ResponsiveLayout(
@@ -71,7 +79,9 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildUI() {
     return SafeArea(
       child: Container(
-        padding: const _WidgetEdgeInsets.containerSymmetricH(),
+        padding: MediaQuery.of(context).size.width > webScreenSize
+            ? EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 3)
+            : const _WidgetEdgeInsets.containerSymmetricH(),
         width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -106,10 +116,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _infoText(child: Text(ProjectString.haveAccountText.toStr())),
+        _infoText(child: const Text(StringConstants.haveAccountText)),
         GestureDetector(
           onTap: navigateToSignUp,
-          child: _infoText(child: Text(ProjectString.signUpText.toStr(), style: _signUpTextStyle())),
+          child: _infoText(child: Text(StringConstants.signUpText, style: _signUpTextStyle())),
         ),
       ],
     );
@@ -132,9 +142,9 @@ class _LoginScreenState extends State<LoginScreen> {
         decoration: _loginButtonDecoration(),
         child: _isLoading
             ? const Center(
-                child: CircularProgressIndicator(color: primaryColor),
+                child: CircularProgressIndicator(color: ColorConstants.primaryColor),
               )
-            : Text(ProjectString.loginText.toStr()),
+            : const Text(StringConstants.loginText),
       ),
     );
   }
@@ -146,14 +156,14 @@ class _LoginScreenState extends State<LoginScreen> {
           Radius.circular(_WidgetSize().buttonRadius),
         ),
       ),
-      color: blueColor,
+      color: ColorConstants.blueColor,
     );
   }
 
   Widget _emailInput() {
     return TextFieldInput(
       textEditingController: _emailController,
-      hintText: ProjectString.emailText.toStr(),
+      hintText: StringConstants.emailText,
       textInputType: TextInputType.emailAddress,
     );
   }
@@ -161,16 +171,20 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _passwordInput() {
     return TextFieldInput(
       textEditingController: _passwordController,
-      hintText: ProjectString.passwordText.toStr(),
+      hintText: StringConstants.passwordText,
       textInputType: TextInputType.text,
-      isPass: true,
+      isPass: isShow,
+      icon: isShow ? Icons.visibility : Icons.visibility_off,
+      onChange: () {
+        _changeVisibility();
+      },
     );
   }
 
   Widget _instagramSvgMethod() {
     return SvgPicture.asset(
       ImagePath.instagramSvg.imagePath(),
-      color: primaryColor,
+      color: ColorConstants.primaryColor,
       height: _WidgetSize().instagramSvgHeight,
     );
   }

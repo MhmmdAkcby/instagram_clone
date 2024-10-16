@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/products/utils/colors.dart';
+import 'package:instagram_clone/products/constants/color_constants.dart';
 import 'package:instagram_clone/products/utils/global_variables.dart';
 
 class MobileScreenLayout extends StatefulWidget {
@@ -47,47 +47,47 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
         children: homeScreenItems,
       ),
       bottomNavigationBar: CupertinoTabBar(
-        backgroundColor: mobileBackgroundColor,
+        backgroundColor: ColorConstants.mobileBackgroundColor,
         items: [
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home,
-              color: _page == 0 ? primaryColor : secondaryColor,
+              color: _page == 0 ? ColorConstants.primaryColor : ColorConstants.secondaryColor,
             ),
             label: '',
-            backgroundColor: primaryColor,
+            backgroundColor: ColorConstants.primaryColor,
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.search,
-              color: _page == 1 ? primaryColor : secondaryColor,
+              color: _page == 1 ? ColorConstants.primaryColor : ColorConstants.secondaryColor,
             ),
             label: '',
-            backgroundColor: primaryColor,
+            backgroundColor: ColorConstants.primaryColor,
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.add_circle,
-              color: _page == 2 ? primaryColor : secondaryColor,
+              color: _page == 2 ? ColorConstants.primaryColor : ColorConstants.secondaryColor,
             ),
             label: '',
-            backgroundColor: primaryColor,
+            backgroundColor: ColorConstants.primaryColor,
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.favorite,
-              color: _page == 3 ? primaryColor : secondaryColor,
+              color: _page == 3 ? ColorConstants.primaryColor : ColorConstants.secondaryColor,
             ),
             label: '',
-            backgroundColor: primaryColor,
+            backgroundColor: ColorConstants.primaryColor,
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.person,
-              color: _page == 4 ? primaryColor : secondaryColor,
+              color: _page == 4 ? ColorConstants.primaryColor : ColorConstants.secondaryColor,
             ),
             label: '',
-            backgroundColor: primaryColor,
+            backgroundColor: ColorConstants.primaryColor,
           ),
         ],
         onTap: navigationTap,
